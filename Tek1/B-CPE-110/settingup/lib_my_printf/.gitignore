@@ -1,0 +1,11 @@
+libmy.a
+mr_clean.sh
+*.out
+#*#
+*~
+unit_test*
+main.c
+*.o
+logique_printf.txt
+.vscode
+coding-style-reports.log

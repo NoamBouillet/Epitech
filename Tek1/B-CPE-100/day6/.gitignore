@@ -1,0 +1,9 @@
+#*#
+*~
+unit_tests
+my_putchar.c
+mr_clean.sh
+main.c
+install_criterion.sh
+*.gc*
+*.out

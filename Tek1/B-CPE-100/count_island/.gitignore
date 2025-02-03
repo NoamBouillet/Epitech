@@ -1,0 +1,8 @@
+libmy.a
+mr_clean.sh
+count_island
+#*#
+*~
+unit_test*
+main.o
+foo.txt

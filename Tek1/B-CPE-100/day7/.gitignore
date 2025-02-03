@@ -1,0 +1,6 @@
+libmy.a
+mr_clean.sh
+*.out
+#*#
+*~
+unit_test*

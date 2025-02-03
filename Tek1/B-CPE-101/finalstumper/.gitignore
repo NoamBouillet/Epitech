@@ -1,0 +1,9 @@
+libmy.a
+mr_clean.sh
+*.out
+#*#
+*~
+*.gc*
+unit_test*
+my_struct.c
+*.o

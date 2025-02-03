@@ -1,0 +1,6 @@
+my_putchar.c
+main.c
+mr_clean.sh
+*.out
+#*#
+*~

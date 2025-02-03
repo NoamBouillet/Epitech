@@ -1,0 +1,201 @@
+#!/bin/python3
+
+import sys
+from math import *
+
+#All matrix functions
+
+def string_to_int(string):
+    list = []
+    for i in range(len(string)):
+        list.append(ord(string[i]))
+    return list
+
+def smallest_matrix(text):
+    list_ascii = string_to_int(text)
+    matrix = []
+    size = ceil(sqrt(len(list_ascii)))
+    index = 0
+    for i in range(size):
+        matrix.append([])
+        for j in range(size):
+            if index >= len(list_ascii):
+                matrix[i].append('0')
+            else:
+                matrix[i].append(list_ascii[index])
+                index += 1
+    return matrix
+
+def columns_matrix(text, n):
+    list_ascii = string_to_int(text)
+    matrix = []
+    size = ceil(len(list_ascii) / n)
+    index = 0
+    for i in range(size):
+        matrix.append([])
+        for j in range(n):
+            if index >= len(list_ascii):
+                matrix[i].append('0')
+            else:
+                matrix[i].append(list_ascii[index])
+                index += 1
+    return matrix
+
+def columns_matrix_numbers(text, n):
+    list_ascii = list(map(int, text.split()))
+    matrix = []
+    size = ceil(len(list_ascii) / n)
+    index = 0
+    for i in range(size):
+        matrix.append([])
+        for j in range(n):
+            if index >= len(list_ascii):
+                matrix[i].append('0')
+            else:
+                matrix[i].append(list_ascii[index])
+                index += 1
+    return matrix
+
+def transpose_matrix(matrix):
+    transposed_matrix = [[matrix[j][i] for j in range (len (matrix))] for i in range (len (matrix[0]))]
+    return transposed_matrix
+
+def get_determinant_size2(matrix):
+    return int(matrix[0][0]) * int(matrix[1][1]) - int(matrix[0][1]) * int(matrix[1][0])
+
+def get_inverse(matrix):
+    size = get_determinant_size2(matrix)
+    if size == 0:
+        exit(84)
+    inverse_matrix = [[],[]]
+    inverse_matrix[0] = [(int(matrix[1][1]) / size), (-int(matrix[0][1])) / size]
+    inverse_matrix[1] = [(-int(matrix[1][0])) / size, (int(matrix[0][0])) / size]
+    return inverse_matrix
+
+def get_inverse_size1(matrix):
+    size = int(matrix[0][0])
+    if size == 0:
+        exit(84)
+    inverse_matrix = [[1 / size]]
+    return inverse_matrix
+
+def minor(matrix, row, col):
+    return [ [matrix[i][j] for j in range(len(matrix[i])) if j != col] for i in range(len(matrix)) if i != row]
+
+def cofactor_matrix(matrix):
+    rows = len(matrix)
+    cols = len(matrix[0])
+    cofactor_matrix = [[0 for _ in range(cols)] for _ in range(rows)]
+    for i in range(rows):
+        for j in range(cols):
+            minor_matrix = minor(matrix, i, j)
+            minor_determinant = get_determinant_size2(minor_matrix)
+            cofactor_matrix[i][j] = ((-1) ** (i + j)) * minor_determinant
+    return cofactor_matrix
+
+def multiplies_matrices(first_list, sec_list):
+    multi_matrix = []
+    for i in range(len(first_list)):
+        multi_matrix.append([])
+        for j in range(len(sec_list[0])):
+            sum = 0
+            for k in range(len(sec_list)):
+                sum += int(first_list[i][k]) * int(sec_list[k][j])
+            multi_matrix[i].append(sum)
+    return multi_matrix
+
+def multiplies_matrices_decryption(first_list, sec_list):
+    multi_matrix = []
+    for i in range(len(first_list)):
+        multi_matrix.append([])
+        for j in range(len(sec_list[0])):
+            sum = 0
+            for k in range(len(sec_list)):
+                sum += first_list[i][k] * sec_list[k][j]
+            multi_matrix[i].append(round(sum))
+    return multi_matrix
+
+def get_determinant_size3(matrix):
+    cofactors = cofactor_matrix(matrix)
+    determinant = cofactors[0][0] * matrix[0][0] + cofactors[0][1] * matrix[0][1] + cofactors[0][2] * matrix[0][2]
+    return determinant
+
+def get_inverse_size3(matrix):
+    adjacent = cofactor_matrix(matrix)
+    size = get_determinant_size3(matrix)
+    if size == 0:
+        exit(84)
+    inverse_matrix = [[], [], []]
+    inverse_matrix[0] = [(adjacent[0][0] / size), (adjacent[1][0]) / size, adjacent[2][0]/size]
+    inverse_matrix[1] = [(adjacent[0][1] / size), (adjacent[1][1]) / size, adjacent[2][1]/size]
+    inverse_matrix[2] = [(adjacent[0][2] / size), (adjacent[1][2]) / size, adjacent[2][2]/size]
+    return inverse_matrix
+
+#Decrypting and encrypting
+
+def encrypt_text(key, text):
+    key_matrix = smallest_matrix(key)
+    text_matrix = columns_matrix(text, len(key_matrix))
+    encrypted_text = multiplies_matrices(text_matrix, key_matrix)
+    print("Key matrix:")
+    for i in range(len(key_matrix)):
+        for j in range(len(key_matrix[0])):
+            if j == len(key_matrix[0]) - 1:
+                print(key_matrix[i][j])
+            else:
+                print(key_matrix[i][j], end="\t")
+    print("")
+    print("Encrypted message:")
+    for i in range(len(encrypted_text)):
+        for j in range(len(encrypted_text[0])):
+            if j == (len(encrypted_text[0]) - 1) and i == len(encrypted_text) - 1:
+                print(encrypted_text[i][j], end = "")
+            else:
+                print(encrypted_text[i][j], end = " ")
+    print("")
+    return 0
+
+def decrypt_text(key, text):
+    key_matrix = smallest_matrix(key)
+    if len(key) == 1:
+        inverse_key_matrix = get_inverse_size1(key_matrix)
+    elif len(key_matrix) == 2:
+        inverse_key_matrix = get_inverse(key_matrix)
+    else:
+        inverse_key_matrix = get_inverse_size3(key_matrix)
+    text_matrix = columns_matrix_numbers(text, len(key_matrix))
+    decrypted_text_matrix = multiplies_matrices_decryption(text_matrix, inverse_key_matrix)
+    decrypted_text = ""
+    for i in range(len(decrypted_text_matrix)):
+        for j in range(len(decrypted_text_matrix[0])):
+            ascii_value = int(decrypted_text_matrix[i][j])
+            if ascii_value > 0:
+                decrypted_text += (chr(ascii_value))
+    print("Key matrix:")
+    for i in range(len(inverse_key_matrix)):
+        for j in range(len(inverse_key_matrix[0])):
+            if j == len(inverse_key_matrix[0]) - 1:
+                print(f"{inverse_key_matrix[i][j]:.3f}")
+            else:
+                print(f"{inverse_key_matrix[i][j]:.3f}", end="\t")
+    print("")
+    print("Decrypted message:")
+    print(decrypted_text)
+    return 0
+
+#Printing everything
+
+if len(sys.argv) != 4:
+    exit(84)
+key = sys.argv[2]
+text = sys.argv[1]
+flag = sys.argv[3]
+
+if flag != "0" and flag != "1":
+    exit(84)
+if key == "" or text == "":
+    exit(84)
+if (flag == "0"):
+    encrypt_text(key, text)
+else:
+    decrypt_text(key, text)

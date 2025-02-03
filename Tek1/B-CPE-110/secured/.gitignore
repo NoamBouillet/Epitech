@@ -1,0 +1,9 @@
+*.o
+secured
+*.a
+.vscode/
+tests/
+test_files/
+main.c
+a.out
+generator.py

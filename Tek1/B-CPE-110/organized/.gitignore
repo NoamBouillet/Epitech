@@ -1,0 +1,4 @@
+*.o
+organized
+libmy.a
+tests

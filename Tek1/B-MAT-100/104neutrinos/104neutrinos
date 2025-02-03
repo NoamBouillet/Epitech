@@ -1,0 +1,72 @@
+#!/bin/python3
+
+import sys
+from math import *
+
+#Functions
+
+def arithmetic_mean(nb, arithmetic, new_value):
+    if nb < 0:
+        return 0
+    else:
+        return (arithmetic * nb + new_value) / (nb + 1)
+
+def root_mean_square(nb, root_mean, new_value):
+    if nb < 0:
+        return 0
+    else:
+        return sqrt((root_mean * nb + new_value ** 2) / (nb + 1))
+
+def harmonic_mean(nb, harmonic, new_value):
+    if nb <= 0 or harmonic <= 0:
+        return 0
+    if new_value <= 0:
+        exit(84)
+    inverse_sum = (1 / harmonic) * nb
+    new_harmonic = (nb + 1) / (inverse_sum + 1 / new_value)
+    return new_harmonic
+
+#Main
+
+if len(sys.argv) != 5:
+    exit(84)
+
+try:
+    number = int(sys.argv[1])
+    arithmetic = int(sys.argv[2])
+    harmonic = int(sys.argv[3])
+    deviation = int(sys.argv[4])
+except ValueError:
+    exit(84)
+
+if number < 0 or arithmetic < 0 or harmonic < 0 or deviation < 0:
+    exit(84)
+
+while True:
+    print("Enter next value:", end = " ", flush=True)
+    line = sys.stdin.readline().rstrip()
+    if line == 'END':
+        break
+    try:
+        value = int(line)
+        if value <= 0:
+            exit(84)
+        harmonic = harmonic_mean(number, harmonic, value)
+        root_mean = arithmetic ** 2 + deviation ** 2
+        arithmetic = arithmetic_mean(number, arithmetic, value)
+        rms = root_mean_square(number, root_mean, value)
+        deviation = sqrt(rms ** 2 - arithmetic ** 2)
+        number += 1
+        print(f'\tNumber of values:   '.expandtabs(4), end ="")
+        print(number)
+        print(f'\tStandard deviation: '.expandtabs(4), end = "") # A FAIRE
+        print("{:.2f}".format(round(deviation, 2)))
+        print("\tArithmetic mean:\t".expandtabs(4), end = "")
+        print("{:.2f}".format(round(arithmetic, 2)))
+        print(f'\tRoot mean square:\t'.expandtabs(4), end  = "")
+        print("{:.2f}".format(round(rms, 2)))
+        print('\tHarmonic mean:\t\t'.expandtabs(4), end = "")
+        print("{:.2f}".format(round(harmonic, 2)))
+        print("")
+    except ValueError:
+        exit(84)

@@ -1,0 +1,81 @@
+#!/bin/python3
+
+import sys
+from math import sqrt
+
+# Calculs
+
+def mean(data):
+    return sum(data) / len(data)
+
+def variance(data):
+    avg = mean(data)
+    return sum((x - avg) ** 2 for x in data) / len(data)
+
+def covariance(x, y):
+    avg_x = mean(x)
+    avg_y = mean(y)
+    return sum((x[i] - avg_x) * (y[i] - avg_y) for i in range(len(x))) / len(x)
+
+#CSV
+
+def read_csv(file_path, delimiter=";"):
+    with open(file_path, 'r') as f:
+        rows = f.readlines()
+    data = [row.strip().split(delimiter) for row in rows]
+    return data
+
+def extract_combined_data(data, country_codes):
+    combined_years = None
+    combined_population = []
+    countries = []
+
+    for row in data:
+        if len(row) > 1 and row[1] in country_codes:
+            if not combined_years:
+                combined_years = [1960 + i for i in range(0, len(row) - 2)]
+            population = [int(p) / 1_000_000 for p in row[2:] if p.isdigit()]
+            combined_population = [sum(x) for x in zip(combined_population, population)] if combined_population else population
+            countries.append(row[0])
+    return countries, combined_years, combined_population
+
+#Main
+
+def main():
+    file_path = '105demography_data.csv'
+    if len(sys.argv) < 2:
+        sys.exit(84)
+
+    country_codes = sys.argv[1:]
+    data = read_csv(file_path)
+    countries, years, population = extract_combined_data(data, country_codes)
+    if not years or not population:
+        sys.exit(84)
+    if len(countries) != len(country_codes):
+        sys.exit(84)
+    cov_xy = covariance(years, population) #GOOD
+    var_x = variance(years) #GOOD
+    var_y = variance(population) #GOOD
+    aX = cov_xy / var_x #GOOD
+    bX = mean(population) - aX * mean(years) #GOOD
+    population_2050_y = aX * 2050 + bX #GOOD
+    aY = cov_xy / var_y #GOOD
+    bY = mean(years) - aY * mean(population) #GOOD
+    population_2050_X = (2050 - bY) / aY if aY != 0 else float('inf')
+    rmsd_y = sqrt(sum((population[i] - (aX * years[i] + bX)) ** 2 for i in range(len(years))) / len(years))
+    rmsd_x = (sum((((y - bY) / aY - actual)**2 for y, actual in zip(years, population))) / len(population))**0.5
+    correlation = cov_xy / (sqrt(var_x) * sqrt(var_y)) #GOOD
+
+    print(f"Country: {', '.join(countries)}")
+    print("Fit1")
+    print(f"    Y = {aX:.2f} X {'+' if bX >= 0 else '-'} {abs(bX):.2f}")
+    print(f"    Root-mean-square deviation: {rmsd_y:.2f}")
+    print(f"    Population in 2050: {population_2050_y:.2f}")
+    print("Fit2")
+    print(f"    X = {aY:.2f} Y {'+' if bY >= 0 else '-'} {abs(bY):.2f}")
+    print(f"    Root-mean-square deviation: {rmsd_x:.2f}")
+    print(f"    Population in 2050: {population_2050_X:.2f}")
+    print(f"Correlation: {correlation:.4f}")
+
+if __name__ == "__main__":
+    main()
