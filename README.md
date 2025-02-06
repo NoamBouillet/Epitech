@@ -4,8 +4,6 @@ Welcome to my studies folder. These are all my projects done during my studies a
 ## ⚠️ Warning
 **You are forbidden to copy or paste any code** from here. This code is my intellectual property and a result of my personal effort and learning..
 
----
-
 ## 📌 Overview
 
 ### First Year  
