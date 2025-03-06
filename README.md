@@ -7,8 +7,8 @@ Welcome to my studies folder. These are all my projects done during my studies a
 ## 📌 Overview
 
 ### First Year  
-- **Credits:** 12 currently, 63 credits can be obtained in addition.  
-- **GPA:** 3.67
+- **Credits:** 32 currently, 41 credits can be obtained in addition.  
+- **GPA:** 3.75
 - **TEpitech:** 875
 
 ### Semester 1  
@@ -18,9 +18,9 @@ Welcome to my studies folder. These are all my projects done during my studies a
 | B1 - Unix & C Lab Seminar (Part I)     |     A     |
 | B1 - Unix & C Lab Seminar (Part II)    |     A     |
 | B1 - C Graphical Programming           |     B     |
-| B1 - Mathematics                       |     /     |
-| B1 - Elementary Programming in C       |     /     |
-| B1 - Unix System Programming           |     /     |
+| B1 - Mathematics                       |     A     |
+| B1 - Elementary Programming in C       |     A     |
+| B1 - Unix System Programming           |     A     |
 
 ---
 
