@@ -7,8 +7,8 @@ Welcome to my studies folder. These are all my projects done during my studies a
 ## 📌 Overview
 
 ### First Year  
-- **Credits:** 38 currently, 35 credits can be obtained in addition.  
-- **GPA:** 3.79
+- **Credits:** 70 obtained.  
+- **GPA:** 3.88/4
 - **TEpitech:** 875
 
 ### Semester 1  
@@ -22,9 +22,20 @@ Welcome to my studies folder. These are all my projects done during my studies a
 | G1 - Elementary Programming in C         |     A     |
 | G1 - Unix System Programming             |     A     |
 | G1 - Networks and Systems Administration |     B     |
+
+### Semester 2  
+
+| **Module**                               | **Grade** |
+|------------------------------------------|:---------:|
 | G2 - Discovery of Software Engineering   |     A     |
 | G2 - Discovery of Cyber Security         |     A     |
 | G2 - Discovery of Data Analysis          |     A     |
+| G2 - Introduction to Cyber Security      |     A     |
+| G2 - Shell Programming                   |     A     |
+| G2 - Elementary Programming in C         |     A     |
+| G2 - Introduction to Devops              |     A     |
+| G2 - Introduction to Web                 |     A     |
+| G2 - Professional Communication          |     A     |
 
 ---
 
